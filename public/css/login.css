@@ -1,0 +1,117 @@
+:root {
+  --blue: #0f2442;
+  --red: #a50f2d;
+  --red-dark: #830b22;
+  --gray: #f4f4f4;
+  --border: #d8d8d8;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 430px;
+}
+
+.title-school {
+  font-family: "Cinzel", serif;
+  font-weight: 700;
+  color: white;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.subtitle-school {
+  color: #c5cfdb;
+  font-size: 0.88rem;
+}
+
+.login-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.login-card .form-control {
+  background: var(--gray);
+  border: 1px solid var(--border);
+  height: 48px;
+  font-size: 0.95rem;
+}
+
+.login-card .form-control:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 0.2rem rgba(165, 15, 45, 0.15);
+  background: white;
+}
+
+.login-card .input-group-text {
+  background: var(--gray);
+  border: 1px solid var(--border);
+  color: var(--red);
+}
+
+.btn-login {
+  background: var(--red);
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  height: 48px;
+  transition: 0.25s;
+}
+
+.btn-login:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+}
+
+.btn-login:disabled {
+  background: #ccc;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.btn-register {
+  border: 2px solid #6b7280;
+  color: #374151;
+  background: white;
+  border-radius: 12px;
+  height: 50px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.btn-register:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(165, 15, 45, 0.18);
+}
+
+.btn-register:hover i {
+  transform: rotate(8deg);
+}
+
+.btn-register i {
+  transition: 0.25s;
+}
+
+.forgot-link {
+  color: var(--red);
+  font-size: 0.85rem;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
