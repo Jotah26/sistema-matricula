@@ -1,0 +1,3 @@
+◇ injected env (7) from .env // tip: ⌘ suppress logs { quiet: true }
+[initNotificadores] Notificaciones activas
+Servidor en http://localhost:3000
