@@ -1,0 +1,40 @@
+#tablaReporte thead th {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #areaPDF, #areaPDF * { visibility: visible; }
+  #areaPDF {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
+  }
+  .no-print { display: none !important; }
+  body {
+    font-family: "DM Sans", sans-serif;
+    background: #fff !important;
+  }
+  .pdf-header { display: flex !important; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td {
+    border: 1px solid #dee2e6 !important;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+  thead {
+    background-color: #0a1628 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .kpi-print { display: flex !important; gap: 1rem; margin-bottom: 1.5rem; }
+  .kpi-item { flex: 1; border: 1px solid #dee2e6; border-radius: 8px; padding: 0.75rem 1rem; }
+}
