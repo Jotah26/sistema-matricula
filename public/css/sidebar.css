@@ -1,0 +1,207 @@
+/* sidebar.css */
+:root {
+  --sidebar-bg:    #0a1628;
+  --sidebar-gold:  #d4a017;
+  --sidebar-w:     240px;
+}
+
+.sidebar {
+  width: var(--sidebar-w);
+  min-height: 100vh;
+  background: var(--sidebar-bg);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+/* BRAND — hereda clases Bootstrap (playfair, text-secondary, etc.) */
+.playfair { font-family: "Playfair Display", serif; }
+
+/* Evita layout shift mientras el sidebar se carga vía fetch */
+#sidebar-container {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+}
+
+/* Fade-in suave del contenido principal al cargar la página */
+main.col {
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Botón cerrar dentro del sidebar (móvil) */
+.sidebar-close {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 6px;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-close:hover {
+  background: rgba(255,255,255,.2);
+}
+
+/* Overlay oscuro para móvil */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1040;
+}
+
+/* Botón hamburguesa flotante (visible solo en < lg = < 992px) */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: .65rem;
+  left: .65rem;
+  z-index: 1050;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--sidebar-bg);
+  color: #fff;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  transition: background .2s;
+}
+.sidebar-toggle:hover {
+  background: #162d50;
+}
+
+/* En móvil (< 992px) el sidebar se vuelve fixed overlay */
+@media (max-width: 991.98px) {
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  #sidebar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1045;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+
+  #sidebar-container.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay.show {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    height: 100%;
+  }
+
+  /* Espacio para el botón hamburguesa en mobile */
+  main.col > div:first-child {
+    padding-left: 3.5rem !important;
+  }
+}
+
+/* Cuando el sidebar es visible en desktop (>= lg) */
+@media (min-width: 992px) {
+  .sidebar-toggle { display: none !important; }
+  .sidebar-overlay { display: none !important; }
+}
+
+/* NAV LINKS — estilo demo (nav-link-custom / nav-link-active) */
+.nav-link-custom {
+  color: rgba(255,255,255,.65) !important;
+  border-left: 3px solid transparent;
+  transition: .2s;
+}
+.nav-link-custom:hover {
+  color: #fff !important;
+  background: rgba(255,255,255,.06);
+  border-left-color: var(--sidebar-gold);
+}
+.nav-link-active {
+  color: var(--sidebar-gold) !important;
+  background: rgba(255,255,255,.06);
+  border-left-color: var(--sidebar-gold);
+}
+
+/* ─── Mejoras responsive para el panel principal ─── */
+
+/* Pantallas pequeñas (< 576px) */
+@media (max-width: 575.98px) {
+  .p-4 {
+    padding: 1rem !important;
+  }
+  .p-3 {
+    padding: .75rem !important;
+  }
+  .card-body {
+    padding: 1rem !important;
+  }
+  .card-header {
+    padding: .75rem 1rem !important;
+  }
+  h3.fw-bold {
+    font-size: calc(1.3rem + .6vw);
+  }
+  .rounded-circle[style*="width: 52px"] {
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .rounded-circle[style*="width: 52px"] i {
+    font-size: 1rem !important;
+  }
+  .stat-card {
+    padding: .85rem !important;
+  }
+  .stat-card h2 {
+    font-size: 1.25rem !important;
+  }
+  /* Acciones de tabla más compactas */
+  .table .gap-2 {
+    gap: .35rem !important;
+  }
+  .table .btn-sm {
+    font-size: .72rem;
+    padding: .25rem .5rem;
+  }
+}
+
+/* Tablet (< 768px) */
+@media (max-width: 767.98px) {
+  .page-body {
+    padding: 1rem !important;
+  }
+  .welcome-banner {
+    padding: 1rem 1.25rem !important;
+  }
+}
+
+/* Ajuste para el contenedor principal cuando el sidebar está visible en desktop */
+@media (min-width: 992px) {
+  .page-body {
+    padding: 2rem;
+  }
+}

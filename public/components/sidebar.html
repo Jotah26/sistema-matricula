@@ -1,0 +1,31 @@
+<aside id="sidebar" class="sidebar d-flex flex-column p-0">
+
+  <!-- Close button (visible solo en móvil) -->
+  <button class="sidebar-close d-lg-none" id="sidebarClose" aria-label="Cerrar menú">&times;</button>
+
+  <!-- LOGO -->
+  <div class="border-bottom border-secondary p-4 text-center">
+    <img src="/images/logo.png" class="img-fluid mb-3"
+         style="width:60px;height:60px;object-fit:cover" />
+    <h6 class="playfair text-white fw-bold mb-0">I.E. Pedro Labarthe</h6>
+    <small class="text-secondary">Sistema de Matrícula 2026</small>
+  </div>
+
+  <!-- NAV (se rellena por JS según el rol) -->
+  <nav class="flex-grow-1 overflow-auto py-3" id="sidebarNav">
+  </nav>
+
+  <!-- USUARIO -->
+  <div class="border-top border-bottom border-secondary px-3 py-4 text-center">
+    <div class="text-white fw-semibold lh-sm" id="sidebarUserName" style="font-size:0.92rem">—</div>
+    <small class="text-secondary" id="sidebarUserRole">—</small>
+  </div>
+
+  <!-- LOGOUT -->
+  <div class="px-3 py-3">
+    <button class="btn btn-light btn-sm w-100 fw-semibold" id="btnLogout">
+      <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+    </button>
+  </div>
+
+</aside>

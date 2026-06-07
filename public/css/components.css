@@ -1,0 +1,49 @@
+.welcome-banner {
+  background: linear-gradient(135deg, #0a1628, #1b3a6b);
+  color: #fff;
+  border-radius: 14px;
+  padding: 1.5rem 1.8rem;
+}
+
+.action-card {
+  text-decoration: none;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  color: inherit;
+  background: #fff;
+  transition: border-color .2s;
+}
+.action-card:hover { border-color: #aaa; }
+
+.icon-box {
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 10px;
+  background: rgba(10,22,40,.08);
+  color: #0a1628;
+  font-size: 1.2rem;
+}
+.icon-gold {
+  background: rgba(212,160,23,.15);
+  color: #d4a017;
+}
+
+.hijo-card {
+  background: #fafafa;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: .9rem 1rem;
+}
+
+.found-success {
+  background: #f0f7f0;
+  border: 1.5px solid rgba(39, 174, 96, .3);
+}
+
+.found-error {
+  background: #fff3f3;
+  border: 1.5px solid rgba(231, 76, 60, .25);
+}

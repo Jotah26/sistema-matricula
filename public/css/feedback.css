@@ -1,0 +1,187 @@
+/* ── NOTIFICATION STACK ── */
+.notif-stack {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  pointer-events: none;
+}
+.notif-stack .notif {
+  pointer-events: auto;
+}
+
+.notif {
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.12);
+  animation: notifIn .3s ease-out;
+  transition: opacity .3s, transform .3s;
+}
+.notif.removing {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+@keyframes notifIn {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.notif-success { background: #d4edda; border: 1.5px solid #4caf7d; }
+.notif-success .notif-title { color: #1b5e20; }
+.notif-success .notif-desc  { color: #2e7d32; }
+
+.notif-error { background: #fde8e8; border: 1.5px solid #e57373; }
+.notif-error .notif-title { color: #7f0000; }
+.notif-error .notif-desc  { color: #b71c1c; }
+
+.notif-warning { background: #fff3cd; border: 1.5px solid #f5c542; }
+.notif-warning .notif-title { color: #5c3900; }
+.notif-warning .notif-desc  { color: #7a4f00; }
+
+.notif-loading { background: #fff; border: 1px solid #ddd; align-items: center; }
+.notif-loading .notif-title { color: #555; font-size: 14px; font-weight: 400; }
+
+.notif-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.notif-desc {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.icon-box {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+.icon-success { background: #4caf7d; color: white; }
+.icon-error   { background: #e57373; color: white; }
+.icon-warning { background: #f5c542; color: #5c3900; }
+
+.notif .spinner {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid #ccc;
+  border-top-color: #888;
+  border-radius: 50%;
+  animation: spin 1.1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── FIELD STATES ── */
+.field { display: flex; flex-direction: column; gap: 4px; }
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.input-wrap input,
+.input-wrap select {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  background: transparent;
+  color: #222;
+}
+.input-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+  font-weight: bold;
+  transition: color .2s;
+}
+
+.field-success .input-wrap { border-color: #4caf7d; background: #fff; }
+.field-error .input-wrap { border-color: #e57373; background: #fff5f5; }
+.field-warning .input-wrap { border-color: #f5c542; background: #fff; }
+
+.field-hint {
+  min-height: 22px;
+  font-size: 12.5px;
+  padding-left: 2px;
+}
+.field-hint-success {
+  font-size: 12.5px;
+  color: #2e7d32;
+  padding-left: 2px;
+}
+.field-hint-error {
+  font-size: 12.5px;
+  color: #c62828;
+  background: #fde8e8;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+.field-hint-warning {
+  font-size: 12.5px;
+  color: #7a4f00;
+  background: #fff3cd;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+/* ── PROGRESS BAR ── */
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #fff;
+  padding: 12px 0;
+  border-top: 1px solid rgba(0,0,0,.06);
+  margin-bottom: 0;
+}
+.progress-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #222;
+}
+.progress-bar-bg {
+  width: 100%;
+  height: 10px;
+  background: #e0e0e0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: #4caf7d;
+  border-radius: 999px;
+  transition: width .4s ease;
+}
+.progress-caption {
+  font-size: 13px;
+  color: #555;
+}

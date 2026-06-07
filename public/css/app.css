@@ -1,0 +1,244 @@
+/* app.css — estilos compartidos del panel principal */
+
+:root {
+  --navy: #0a1628;
+  --gold: #d4a017;
+  --light-border: #e8ecf4;
+  --indigo: #1b3a6b;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: #f5f7fb;
+}
+
+.playfair {
+  font-family: "Playfair Display", serif;
+}
+
+.text-navy { color: #0a1628 !important; }
+.bg-navy { background: #0a1628 !important; }
+
+/* ─── Page body ─── */
+.page-body {
+  padding: 2rem;
+}
+@media (max-width: 767px) {
+  .page-body { padding: 1rem; }
+}
+
+/* ─── Topbar ─── */
+#topbarUserName {
+  color: #0a1628;
+  font-weight: 700;
+}
+
+/* ─── Botón nav y personalizados ─── */
+.btn-add {
+  background: #0a1628;
+  color: #fff;
+  border-radius: 8px;
+  padding: .45rem .9rem;
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  border: 0;
+}
+.btn-add:hover {
+  background: #162d50;
+  color: #fff;
+}
+.btn-navy {
+  background: #0a1628;
+  color: #fff;
+  border-radius: 8px;
+  padding: .45rem 1rem;
+  font-size: .85rem;
+  text-decoration: none;
+}
+.btn-navy:hover {
+  background: #162d50;
+  color: #fff;
+}
+
+/* ─── Cards de dashboard ─── */
+.stat-card {
+  background: #fff;
+  border: 1px solid #e8ecf4;
+  border-radius: 16px;
+  padding: 1.1rem;
+}
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+/* ─── Card-box (tablas) ─── */
+.card-box {
+  background: #fff;
+  border: 1px solid #e8ecf4;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.card-hdr {
+  padding: .9rem 1.4rem;
+  border-bottom: 1px solid #e8ecf4;
+}
+
+/* ─── Table-card ─── */
+.table-card {
+  background: #fff;
+  border: 1px solid var(--light-border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.tc-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--light-border);
+}
+
+/* ─── Tabla base ─── */
+.table th {
+  font-size: .76rem;
+  color: #7d8794;
+  border-color: #edf1f6;
+}
+.table td {
+  font-size: .88rem;
+  vertical-align: middle;
+  border-color: #edf1f6;
+}
+.table tbody tr:hover {
+  background: #fafcff;
+}
+
+/* ─── Filter bar ─── */
+.filter-bar {
+  background: #fff;
+  border: 1px solid var(--light-border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.filter-bar .form-control,
+.filter-bar .form-select {
+  border-radius: 9px;
+  font-size: 0.88rem;
+}
+.search-wrap { position: relative; }
+.search-wrap input { padding-left: 2.5rem; }
+.search-wrap i {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+/* ─── Modal header ─── */
+.modal-header-navy {
+  background: var(--navy);
+  color: #fff;
+}
+.modal-header-navy .btn-close {
+  filter: invert(1);
+}
+
+.modal-header .btn-close {
+  filter: invert(1);
+}
+
+/* ─── Detail rows ─── */
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: .7rem 0;
+  border-bottom: 1px solid #f1f3f7;
+  font-size: .9rem;
+}
+.detail-row:last-child { border-bottom: 0; }
+.detail-row span:first-child { color: #6c757d; }
+.detail-row span:last-child {
+  color: #0a1628;
+  font-weight: 500;
+}
+
+/* ─── Tipo selector (matricula) ─── */
+.tipo-btn {
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s;
+}
+.tipo-btn:hover {
+  border-color: #adb5bd !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,.07);
+}
+.tipo-btn.selected {
+  border-color: #0a1628 !important;
+  background: rgba(10,22,40,.04) !important;
+}
+.tipo-btn.selected .tipo-icon {
+  color: #0a1628 !important;
+}
+
+/* ─── Sexo selector ─── */
+.sex-opt input[type=radio] { display: none; }
+.sex-opt input:checked + label {
+  border-color: var(--indigo) !important;
+  color: var(--indigo) !important;
+  background: #eef2ff !important;
+}
+
+/* ─── Hidden utility ─── */
+.hidden { display: none !important; }
+
+/* ─── Badges de estado ─── */
+.badge-estado {
+  border-radius: 50rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.bg-pendiente { background: #ffc107; color: #fff; }
+.bg-aprobada { background: #198754; color: #fff; }
+.bg-anulada { background: #dc3545; color: #fff; }
+
+/* ─── Action buttons ─── */
+.action-btn {
+  border: 0;
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.3rem 0.45rem;
+  transition: .2s;
+}
+.action-btn:hover { background: #f1f4f9; }
+.action-btn.view { color: var(--indigo); }
+.action-btn.ok { color: #198754; }
+.action-btn.del { color: #dc3545; }
+
+/* ─── Pagination ─── */
+.pagination .page-link { cursor: pointer; }
+.pagination .page-link:hover { background: #e9ecef; }
+
+/* ─── Form labels ─── */
+.form-label {
+  font-size: .84rem;
+  font-weight: 500;
+  color: var(--indigo);
+  margin-bottom: .35rem;
+}
+.form-control {
+  border: 1.5px solid #dde3ef;
+  border-radius: 10px;
+  padding: .7rem 1rem;
+  font-size: .93rem;
+}
+.form-control:focus {
+  border-color: var(--indigo);
+  box-shadow: 0 0 0 3px rgba(27,58,107,.1);
+  outline: none;
+}
