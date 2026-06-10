@@ -8,6 +8,7 @@ class Admin extends Usuario {
     this.idAdmin = data.idAdmin || null;
   }
 
+  // Registrar admin — INSERT en Usuario + Admin (transacción)
   async registrarAdmin(datos) {
     const { nombre, apellido, correo, contraseña } = datos;
     const hashed = require("bcryptjs").hashSync(contraseña, 10);
@@ -32,10 +33,12 @@ class Admin extends Usuario {
     }
   }
 
+  // Eliminar usuario
   async eliminarUsuario(idUsuario) {
     await Usuario.delete(idUsuario);
   }
 
+  // Actualizar vacantes de una sección
   async gestionarVacantes(idSeccion, vacantes) {
     await pool.query(
       "UPDATE Seccion SET vacantes = ? WHERE idSeccion = ?",
@@ -43,6 +46,7 @@ class Admin extends Usuario {
     );
   }
 
+  // Registrar alumno — INSERT en Alumno
   async registrarAlumno(alumno) {
     const { idApoderado, nombre, apellido, dni, fechaNacimiento, genero } = alumno;
     const [result] = await pool.query(
@@ -53,6 +57,7 @@ class Admin extends Usuario {
     return result.insertId;
   }
 
+  // Buscar alumno por DNI (con datos del apoderado)
   async buscarAlumno(dni) {
     const [rows] = await pool.query(
       `SELECT a.*, CONCAT(u.nombre, ' ', u.apellido) AS apoderado
@@ -64,6 +69,7 @@ class Admin extends Usuario {
     return rows.length ? rows[0] : null;
   }
 
+  // Registrar matrícula — INSERT en Matricula
   async registrarMatricula(data) {
     const { idAlumno, idSeccion, idUsuario, periodoAcademico } = data;
     const [result] = await pool.query(
@@ -74,6 +80,7 @@ class Admin extends Usuario {
     return result.insertId;
   }
 
+  // Actualizar matrícula (campos dinámicos)
   async actualizarMatricula(idMatricula, datos) {
     const campos = Object.keys(datos).map(k => `${k} = ?`).join(", ");
     const valores = Object.values(datos);
@@ -83,10 +90,12 @@ class Admin extends Usuario {
     );
   }
 
+  // Eliminar matrícula por ID
   async eliminarMatricula(idMatricula) {
     await pool.query("DELETE FROM Matricula WHERE idMatricula = ?", [idMatricula]);
   }
 
+  // Consultar matrícula con JOINs (alumno, apoderado, sección)
   async consultarMatricula(idMatricula) {
     const [rows] = await pool.query(
       `SELECT m.*, CONCAT(al.nombre, ' ', al.apellido) AS alumno, al.dni AS dni_alumno,
@@ -102,6 +111,7 @@ class Admin extends Usuario {
     return rows.length ? rows[0] : null;
   }
 
+  // Validar que una matrícula existe y está PENDIENTE
   async validarMatricula(idMatricula) {
     const [rows] = await pool.query(
       "SELECT * FROM Matricula WHERE idMatricula = ? AND estado = 'PENDIENTE'",
@@ -110,6 +120,7 @@ class Admin extends Usuario {
     return rows.length > 0;
   }
 
+  // Generar reporte de matrículas por periodo
   async generarReporte(tipo, periodo) {
     if (tipo === "matriculas") {
       const [rows] = await pool.query(`
@@ -132,6 +143,7 @@ class Admin extends Usuario {
     return [];
   }
 
+  // Obtener admin por ID (JOIN Usuario + Admin)
   static async findById(id) {
     const [rows] = await pool.query(
       `SELECT u.*, a.idAdmin FROM Usuario u

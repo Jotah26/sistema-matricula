@@ -13,6 +13,7 @@ class Usuario {
     this.fechaRegistro = data.fechaRegistro || null;
   }
 
+  // Iniciar sesión — validar credenciales (correo + contraseña)
   async iniciarSesion(correo, contraseña) {
     const [rows] = await pool.query(
       "SELECT * FROM Usuario WHERE correo = ?", [correo]
@@ -28,6 +29,7 @@ class Usuario {
     return true;
   }
 
+  // Modificar datos del usuario (nombre, correo)
   async modificarDatos(nombre, correo) {
     await pool.query(
       "UPDATE Usuario SET nombre = ?, correo = ? WHERE idUsuario = ?",
@@ -48,11 +50,13 @@ class Usuario {
   getId() { return this.idUsuario; }
   getRol() { return this.rol; }
 
+  // Obtener usuario por ID
   static async findById(id) {
     const [rows] = await pool.query("SELECT * FROM Usuario WHERE idUsuario = ?", [id]);
     return rows.length ? rows[0] : null;
   }
 
+  // Listar todos los usuarios (con JOIN a Apoderado)
   static async findAll() {
     const [rows] = await pool.query(`
       SELECT u.idUsuario AS id, u.nombre, u.apellido, u.correo,
@@ -66,6 +70,7 @@ class Usuario {
     return rows;
   }
 
+  // Eliminar usuario por ID
   static async delete(id) {
     await pool.query("DELETE FROM Usuario WHERE idUsuario = ?", [id]);
   }

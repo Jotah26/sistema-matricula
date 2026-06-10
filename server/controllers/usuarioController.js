@@ -6,6 +6,7 @@ const Apoderado = require("../models/Apoderado");
 const logger = require("../services/logger");
 
 const usuarioController = {
+  // Listar todos los usuarios
   listar: async (req, res) => {
     try {
       const usuarios = await Usuario.findAll();
@@ -16,6 +17,7 @@ const usuarioController = {
     }
   },
 
+  // Obtener usuario por ID (incluye datos extra según rol)
   obtener: async (req, res) => {
     try {
       const usuario = await Usuario.findById(req.params.id);
@@ -40,6 +42,7 @@ const usuarioController = {
     }
   },
 
+  // Eliminar usuario por ID
   eliminar: async (req, res) => {
     try {
       await Usuario.delete(req.params.id, req.user.id);
@@ -50,26 +53,17 @@ const usuarioController = {
     }
   },
 
+  // Actualizar usuario — solo correo (Usuario) y teléfono/dirección (Apoderado)
   actualizar: async (req, res) => {
     try {
-      const { nombre, apellido, correo, telefono, direccion, dni, parentesco } = req.body;
+      const { correo, telefono, direccion } = req.body;
       const usuario = await Usuario.findById(req.params.id);
       if (!usuario) return res.status(404).json({ message: "Usuario no encontrado." });
-      const u = new Usuario(usuario);
 
       const pool = require("../config/db");
 
-      if (nombre !== undefined || apellido !== undefined || correo !== undefined) {
-        const updates = [];
-        const params = [];
-        if (nombre !== undefined) { updates.push("nombre = ?"); params.push(nombre); }
-        if (apellido !== undefined) { updates.push("apellido = ?"); params.push(apellido); }
-        if (correo !== undefined) { updates.push("correo = ?"); params.push(correo); }
-        params.push(req.params.id);
-        await pool.query(
-          "UPDATE Usuario SET " + updates.join(", ") + " WHERE idUsuario = ?",
-          params
-        );
+      if (correo !== undefined) {
+        await pool.query("UPDATE Usuario SET correo = ? WHERE idUsuario = ?", [correo, req.params.id]);
       }
 
       if (usuario.rol === "APODERADO") {
@@ -77,24 +71,6 @@ const usuarioController = {
         const params = [];
         if (telefono !== undefined) { updates.push("telefono = ?"); params.push(telefono); }
         if (direccion !== undefined) { updates.push("direccion = ?"); params.push(direccion); }
-        if (parentesco !== undefined) {
-          const VALID_PARENTESCOS = ['PADRE', 'MADRE', 'TUTOR', 'APODERADO LEGAL', 'OTRO'];
-          if (!parentesco || !VALID_PARENTESCOS.includes(parentesco.toUpperCase())) {
-            return res.status(400).json({ message: "El parentesco debe ser uno de: PADRE, MADRE, TUTOR, APODERADO LEGAL, OTRO" });
-          }
-          updates.push("parentesco = ?"); params.push(parentesco);
-        }
-        if (dni !== undefined) {
-          const [dup] = await pool.query(
-            "SELECT idApoderado FROM Apoderado WHERE dni = ? AND idUsuario != ?",
-            [dni, req.params.id]
-          );
-          if (dup.length > 0) {
-            return res.status(400).json({ message: "El DNI ya está registrado por otro usuario." });
-          }
-          updates.push("dni = ?");
-          params.push(dni);
-        }
         if (updates.length > 0) {
           params.push(req.params.id);
           await pool.query(
@@ -111,6 +87,7 @@ const usuarioController = {
     }
   },
 
+  // Cambiar contraseña — valida actual y formato de la nueva, luego actualiza
   cambiarPassword: async (req, res) => {
     try {
       const { passwordActual, passwordNuevo } = req.body;
@@ -138,6 +115,7 @@ const usuarioController = {
     }
   },
 
+  // Obtener perfil del usuario autenticado
   obtenerPropio: async (req, res) => {
     try {
       const usuario = await Usuario.findById(req.user.id);

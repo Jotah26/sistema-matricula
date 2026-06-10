@@ -12,6 +12,7 @@ class Apoderado extends Usuario {
     this.parentesco = data.parentesco || "";
   }
 
+  // Registrar apoderado — INSERT en Usuario + Apoderado (transacción)
   async registrarApoderado(datos) {
     const { nombre, apellido, correo, contraseña, dni, telefono, direccion, parentesco } = datos;
     const hashed = require("bcryptjs").hashSync(contraseña, 10);
@@ -36,6 +37,7 @@ class Apoderado extends Usuario {
     }
   }
 
+  // Registrar alumno — INSERT en Alumno
   async registrarAlumno(alumno) {
     const { nombre, apellido, dni, fechaNacimiento, genero } = alumno;
     const [result] = await pool.query(
@@ -46,6 +48,7 @@ class Apoderado extends Usuario {
     return result.insertId;
   }
 
+  // Buscar alumno por DNI
   async buscarAlumno(dni) {
     const [rows] = await pool.query(
       "SELECT * FROM Alumno WHERE dni = ? AND idApoderado = ?",
@@ -54,6 +57,7 @@ class Apoderado extends Usuario {
     return rows.length ? rows[0] : null;
   }
 
+  // Solicitar matrícula — valida duplicados, asigna sección, INSERT Matricula
   async solicitarMatricula(idAlumno, grado) {
     const Seccion = require("./Seccion");
     const notificador = require("../services/Notificador");
@@ -89,6 +93,7 @@ class Apoderado extends Usuario {
     return { idMatricula, seccion };
   }
 
+  // Consultar estado de una matrícula
   async consultarEstadoMatricula(idMatricula) {
     const [rows] = await pool.query(
       "SELECT estado FROM Matricula WHERE idMatricula = ?", [idMatricula]
@@ -96,6 +101,7 @@ class Apoderado extends Usuario {
     return rows.length ? rows[0].estado : null;
   }
 
+  // Obtener apoderado por idUsuario (JOIN Usuario + Apoderado)
   static async findByIdUsuario(id) {
     const [rows] = await pool.query(
       `SELECT u.*, a.idApoderado, a.dni, a.telefono, a.direccion, a.parentesco
@@ -106,6 +112,7 @@ class Apoderado extends Usuario {
     return rows.length ? new Apoderado(rows[0]) : null;
   }
 
+  // Buscar apoderado por DNI
   static async findByDni(dni) {
     const [rows] = await pool.query(
       `SELECT u.*, a.idApoderado, a.dni, a.telefono, a.direccion, a.parentesco
@@ -116,6 +123,7 @@ class Apoderado extends Usuario {
     return rows.length ? new Apoderado(rows[0]) : null;
   }
 
+  // Obtener hijos con matrícula activa (INNER JOIN)
   async getHijos() {
     const [rows] = await pool.query(
       `SELECT a.*, m.idMatricula, m.estado, m.fechaRegistro, s.grado, s.seccion
@@ -128,6 +136,7 @@ class Apoderado extends Usuario {
     return rows;
   }
 
+  // Obtener todos los hijos (LEFT JOIN, incluye sin matrícula)
   async getTodosHijos() {
     const [rows] = await pool.query(
       `SELECT a.*, m.idMatricula, m.estado, m.fechaRegistro, s.grado, s.seccion
@@ -140,6 +149,7 @@ class Apoderado extends Usuario {
     return rows;
   }
 
+  // Obtener hijos por idApoderado
   static async getHijosByIdApoderado(idApoderado) {
     const [rows] = await pool.query(
       `SELECT a.*, m.idMatricula, m.estado, m.fechaRegistro, s.grado, s.seccion

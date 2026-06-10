@@ -5,6 +5,7 @@ const Apoderado = require("./Apoderado");
 const pool = require("../config/db");
 
 class UsuarioFactory {
+  // Crear instancia de Admin o Apoderado según rol (Factory)
   static crearUsuario(rol, datos) {
     if (!UsuarioFactory.validarRol(rol)) {
       throw new Error(`Rol no válido: ${rol}`);
@@ -19,10 +20,12 @@ class UsuarioFactory {
     }
   }
 
+  // Validar que el rol sea ADMIN o APODERADO
   static validarRol(rol) {
     return ["ADMIN", "APODERADO"].includes(rol);
   }
 
+  // Iniciar sesión — verifica credenciales, devuelve instancia con datos extra según rol
   static async login(correo, contraseña) {
     const [rows] = await pool.query(
       "SELECT * FROM Usuario WHERE correo = ?", [correo]
@@ -31,16 +34,6 @@ class UsuarioFactory {
 
     const usuario = rows[0];
     const bcrypt = require("bcryptjs");
-
-    // TEMPORAL: descomentar si los hashes $2b$ no son compatibles con bcryptjs
-    // if (!usuario.contraseña.startsWith("$2a$")) {
-    //   const nuevoHash = bcrypt.hashSync(contraseña, 10);
-    //   await pool.query(
-    //     "UPDATE Usuario SET contraseña = ? WHERE idUsuario = ?",
-    //     [nuevoHash, usuario.idUsuario]
-    //   );
-    //   usuario.contraseña = nuevoHash;
-    // }
 
     const ok = await bcrypt.compare(contraseña, usuario.contraseña);
     if (!ok) return null;

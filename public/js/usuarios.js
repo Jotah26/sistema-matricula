@@ -205,11 +205,26 @@ async function abrirModal(modo, btn) {
     }
   }
 
-  ['m_nombre', 'm_apellido', 'm_dni', 'm_tel', 'm_correo', 'm_parentesco', 'm_rol', 'm_dir'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el.tagName === 'SELECT') el.disabled = readonly;
-    else el.readOnly = readonly;
-  });
+  if (modo === 'editar') {
+    ['m_nombre', 'm_apellido', 'm_dni'].forEach(id => {
+      document.getElementById(id).readOnly = true;
+    });
+    ['m_parentesco', 'm_rol'].forEach(id => {
+      document.getElementById(id).disabled = true;
+    });
+    ['m_correo', 'm_tel', 'm_dir'].forEach(id => {
+      const el = document.getElementById(id);
+      el.readOnly = false;
+      if (el.tagName === 'SELECT') el.disabled = false;
+    });
+  } else {
+    ['m_nombre', 'm_apellido', 'm_dni', 'm_tel', 'm_correo', 'm_dir'].forEach(id => {
+      document.getElementById(id).readOnly = readonly;
+    });
+    ['m_parentesco', 'm_rol'].forEach(id => {
+      document.getElementById(id).disabled = readonly;
+    });
+  }
 
   var rolVal = document.getElementById('m_rol').value;
   toggleCamposApoderado(rolVal === 'APODERADO');
@@ -244,51 +259,63 @@ function limpiarModal() {
 }
 
 async function guardarUsuario() {
-  const nombre = document.getElementById('m_nombre').value.trim();
-  const apellido = document.getElementById('m_apellido').value.trim();
-  const dni = document.getElementById('m_dni').value.trim();
   const correo = document.getElementById('m_correo').value.trim();
-  const rol = document.getElementById('m_rol').value;
   const telefono = document.getElementById('m_tel').value.trim();
-  const parentesco = document.getElementById('m_parentesco').value;
   const direccion = document.getElementById('m_dir').value.trim();
 
-  if (!nombre || !apellido || !dni || !correo || !rol) {
-    showErrorAlert('Completa todos los campos obligatorios (*)'); return;
-  }
   if (modoModal === 'nuevo') {
+    const nombre = document.getElementById('m_nombre').value.trim();
+    const apellido = document.getElementById('m_apellido').value.trim();
+    const dni = document.getElementById('m_dni').value.trim();
+    const rol = document.getElementById('m_rol').value;
+    const parentesco = document.getElementById('m_parentesco').value;
+
+    if (!nombre || !apellido || !dni || !correo || !rol) {
+      showErrorAlert('Completa todos los campos obligatorios (*)'); return;
+    }
     const pass = document.getElementById('m_pass').value;
     const pass2 = document.getElementById('m_pass2').value;
     const errs = validarPassword(pass);
     if (errs.length) { showErrorAlert('La contraseña debe tener: ' + errs.join(", ") + '.'); return; }
     if (pass !== pass2) { showErrorAlert('Las contraseñas no coinciden.'); return; }
-  }
 
-  const body = { nombre, apellido, dni, correo, rol, telefono, parentesco, direccion };
+    const body = { nombre, apellido, dni, correo, rol, telefono, parentesco, direccion, contraseña: pass };
 
-  try {
-    if (modoModal === 'nuevo') {
-      body.contraseña = document.getElementById('m_pass').value;
+    try {
       var result = await apiFetch("/auth/register", { method: "POST", body: JSON.stringify(body) });
       if (!result || result.error) {
         showErrorAlert((result && result.error) || 'Error al registrar el usuario');
         return;
       }
       showSuccessAlert('Usuario registrado correctamente.');
-    } else if (modoModal === 'editar') {
-      const id = filaActual ? filaActual.dataset.id : null;
+      bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide();
+      await cargarUsuarios(paginaActual);
+    } catch (e) {
+      console.error("Error guardando usuario:", e);
+      showErrorAlert('Error al guardar el usuario.');
+    }
+    return;
+  }
+
+  if (modoModal === 'editar') {
+    if (!correo) {
+      showErrorAlert('El correo es obligatorio.'); return;
+    }
+    const id = filaActual ? filaActual.dataset.id : null;
+    const body = { correo, telefono, direccion };
+    try {
       var result = await apiFetch("/usuarios/" + id, { method: "PUT", body: JSON.stringify(body) });
       if (!result || result.error) {
         showErrorAlert((result && result.error) || 'Error al actualizar el usuario');
         return;
       }
       showSuccessAlert('Usuario actualizado correctamente.');
+      bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide();
+      await cargarUsuarios(paginaActual);
+    } catch (e) {
+      console.error("Error guardando usuario:", e);
+      showErrorAlert('Error al guardar el usuario.');
     }
-    bootstrap.Modal.getInstance(document.getElementById('modalUsuario')).hide();
-    await cargarUsuarios(paginaActual);
-  } catch (e) {
-    console.error("Error guardando usuario:", e);
-    showErrorAlert('Error al guardar el usuario.');
   }
 }
 

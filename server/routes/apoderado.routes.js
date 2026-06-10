@@ -8,10 +8,12 @@ const verifyRole = require("../middleware/verifyRole");
 const apoderadoController = require("../controllers/apoderadoController");
 
 router.get("/perfil", verifyToken, verifyRole("Apoderado"), apoderadoController.perfil);
+// Validación de DNI (8 dígitos)
 router.get("/dni/:dni", verifyToken, [
   param("dni").matches(/^\d{8}$/).withMessage("DNI debe tener 8 dígitos"),
   (req, res, next) => { const errs = validationResult(req); if (!errs.isEmpty()) return res.status(400).json({ errors: errs.array() }); next(); },
 ], apoderadoController.buscarPorDni);
+// Validación de grado requerido
 router.post("/solicitar-matricula", verifyToken, verifyRole("Apoderado"), [
   body("grado").notEmpty().withMessage("Grado requerido"),
   (req, res, next) => { const errs = validationResult(req); if (!errs.isEmpty()) return res.status(400).json({ errors: errs.array() }); next(); },

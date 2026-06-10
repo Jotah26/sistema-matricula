@@ -4,6 +4,7 @@ const Apoderado = require("../models/Apoderado");
 const logger = require("../services/logger");
 
 const apoderadoController = {
+  // Obtener perfil del apoderado autenticado
   perfil: async (req, res) => {
     try {
       const apoderado = await Apoderado.findByIdUsuario(req.user.id);
@@ -25,6 +26,7 @@ const apoderadoController = {
     }
   },
 
+  // Buscar apoderado por DNI
   buscarPorDni: async (req, res) => {
     try {
       const { dni } = req.params;
@@ -47,6 +49,7 @@ const apoderadoController = {
     }
   },
 
+  // Solicitar matrícula para un hijo
   solicitarMatricula: async (req, res) => {
     try {
       const { idAlumno, alumno_id, grado } = req.body;
@@ -83,6 +86,7 @@ const apoderadoController = {
     }
   },
 
+  // Obtener hijos con matrícula activa
   getHijos: async (req, res) => {
     try {
       const apoderado = await Apoderado.findByIdUsuario(req.user.id);
@@ -95,6 +99,7 @@ const apoderadoController = {
     }
   },
 
+  // Obtener todos los hijos (con o sin matrícula)
   getTodosHijos: async (req, res) => {
     try {
       const apoderado = await Apoderado.findByIdUsuario(req.user.id);
@@ -107,6 +112,7 @@ const apoderadoController = {
     }
   },
 
+  // Obtener hijos por ID de apoderado
   getHijosById: async (req, res) => {
     try {
       const { id } = req.params;

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const UsuarioFactory = require("../models/UsuarioFactory");
 const logger = require("../services/logger");
 
+// Validación de contraseña: 8+ caracteres, mayúscula, minúscula, dígito, carácter especial
 function validarPassword(pass) {
   const faltan = [];
   if (!pass || pass.length < 8) faltan.push("mínimo 8 caracteres");
@@ -16,6 +17,7 @@ function validarPassword(pass) {
 }
 
 const authController = {
+  // Iniciar sesión — autenticar usuario, generar JWT
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -61,6 +63,7 @@ const authController = {
     return res.json({ message: "Sesión cerrada correctamente." });
   },
 
+  // Verificar identidad por DNI + correo (restablecer contraseña)
   verificarIdentidad: async (req, res) => {
     try {
       const { dni, correo } = req.body;
@@ -87,6 +90,7 @@ const authController = {
     }
   },
 
+  // Restablecer contraseña — valida formato y actualiza en BD
   restablecerContrasena: async (req, res) => {
     try {
       const { idUsuario, nuevaContrasena } = req.body;
@@ -110,6 +114,7 @@ const authController = {
     }
   },
 
+  // Registrar usuario — llama a registrarAdmin o registrarApoderado según rol
   register: async (req, res) => {
     try {
       const { contraseña } = req.body;

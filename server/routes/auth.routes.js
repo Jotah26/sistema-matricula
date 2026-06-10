@@ -5,6 +5,7 @@ const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const authController = require("../controllers/authController");
 
+// Validación de credenciales (email + contraseña)
 router.post("/login", [
   body("email").isEmail().withMessage("Correo inválido").normalizeEmail(),
   body("password").notEmpty().withMessage("Contraseña requerida"),
@@ -17,6 +18,7 @@ router.post("/login", [
 
 router.post("/logout", authController.logout);
 
+// Validación de registro (correo, contraseña, nombre, apellido)
 router.post("/register", [
   body("correo").isEmail().withMessage("Correo inválido").normalizeEmail(),
   body("contraseña").isLength({ min: 8 }).withMessage("Contraseña debe tener mínimo 8 caracteres"),
@@ -29,6 +31,7 @@ router.post("/register", [
   },
 ], authController.register);
 
+// Validación de identidad (DNI 8 dígitos + correo)
 router.post("/verificar", [
   body("dni").matches(/^\d{8}$/).withMessage("DNI debe tener 8 dígitos"),
   body("correo").isEmail().withMessage("Correo inválido").normalizeEmail(),
@@ -39,6 +42,7 @@ router.post("/verificar", [
   },
 ], authController.verificarIdentidad);
 
+// Validación de nueva contraseña (mínimo 8 caracteres)
 router.post("/restablecer", [
   body("nuevaContrasena").isLength({ min: 8 }).withMessage("Contraseña debe tener mínimo 8 caracteres"),
   (req, res, next) => {
